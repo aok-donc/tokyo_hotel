@@ -2,6 +2,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import cors from 'cors'
+import {nom_hotel, city_hotel, adress_hotel, reference_hotel, ajout_bdd} from './assets/frontend.js';
 
 // Connection to the database
 const connection = await mysql.createConnection({
@@ -229,7 +230,7 @@ app.get('/tokyohotel', async (req, res) => {
 app.post('/tokyohotel', async (req, res) => {
     try {
         const [results, fields] = await connection.query('INSERT INTO tokyohotel.holets (code, city, adress, reference) VALUES (?, ?, ?, ?)',
-                [req.body.name, JSON.stringify(req.body.ingredients), JSON.stringify(req.body.instructions), req.body.prepTimeMinute])
+                [req.nom_hotel, req.city_hotel, req.adress_hotel, req.reference_hotel])
         res.send(results)
     }
     catch (error) {
