@@ -17,12 +17,12 @@ app.use(cors());
 
 
 //récupère les donnés 
-app.get('/posts', async (req, res) => {
+app.get('/tokyohotel', async (req, res) => {
     if (req.query.search != null) {
-        //récupère 1 donné précise 
+        //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query("SELECT * FROM post.posts JOIN post.users ON posts.userId = users.id JOIN post.comments on posts.id = postId Where posts.id = ?;",
+                await connection.query("SELECT * FROM tokyohotel.holets ;",
                 [req.query.search])
             res.send(results)
         }
@@ -33,12 +33,23 @@ app.get('/posts', async (req, res) => {
     else {
         //récupère toutes les donners 
         try {
-            const posts = await connection.query("SELECT * FROM post.posts JOIN post.users on posts.userId = users.id;")
+            const posts = await connection.query("SELECT * FROM tokyohotel.holets ;")
             res.send(posts)
         }
         catch (error) {
             console.log("error");
         }
+    }
+})
+
+app.post('/tokyohotel', async (req, res) => {
+    try {
+        const [results, fields] = await connection.query('INSERT INTO tokyohotel.holets (code, city, adress, reference) VALUES (?, ?, ?, ?)',
+                [req.body.name, JSON.stringify(req.body.ingredients), JSON.stringify(req.body.instructions), req.body.prepTimeMinute])
+        res.send(results)
+    }
+    catch (error) {
+        console.log(error)
     }
 })
 
