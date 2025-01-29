@@ -60,7 +60,7 @@ app.get('/collaborators', async (req, res) => {
     else {
         //récupère toutes les donners 
         try {
-            const posts = await connection.query("SELECT * FROM tokyohotel.collaborators ;")
+            const posts = await connection.query("SELECT * FROM tokyohotel.collaborators;")
             res.send(posts)
         }
         catch (error) {
@@ -75,8 +75,8 @@ app.get('/options_booking', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.options_booking;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.options_booking WHERE room_option_id= ?;`,
+                [`%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
@@ -101,8 +101,8 @@ app.get('/room_options', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.room_options;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.room_options WHERE UPPER(room_options.label) LIKE UPPER(?) OR room_option.price LIKE ?;`,
+                [`%${req.query.search}%`,`%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
@@ -127,8 +127,8 @@ app.get('/room_types', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.room_types;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.room_types WHERE UPPER(room_types.label) LIKE UPPER(?) OR room_types.price LIKE ?;`,
+                [`%${req.query.search}%`, `%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
@@ -153,8 +153,8 @@ app.get('/room_types_booking', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.room_types_booking;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.room_types_booking WHERE room_types_booking.room_option_id = ? OR room_types_booking.quantity=?;`,
+                [`%${req.query.search}%`,`%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
@@ -173,14 +173,14 @@ app.get('/room_types_booking', async (req, res) => {
     }
 })
 
-//récupère les donnés des rooms ou recherche une rooms
+//récupère les donnés des rooms ou recherche une rooms grace à son numero
 app.get('/rooms', async (req, res) => {
     if (req.query.search != null) {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.rooms;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.rooms WHERE rooms.number =?;`,
+                [`%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
