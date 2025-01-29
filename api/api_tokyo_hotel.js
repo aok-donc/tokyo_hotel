@@ -23,7 +23,7 @@ app.get('/hotel', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.holets WHERE holets.code LIKE ? OR holets.city LIKE ? OR holets.adress LIKE ? OR holets.reference LIKE ? OR holets.created_at LIKE ? OR holets.updated_at LIKE ?;`,
+                await connection.query(`SELECT * FROM tokyohotel.holets WHERE UPPER(holets.code) LIKE UPPER(?) OR UPPER(holets.city) LIKE UPPER(?) OR UPPER(holets.adress) LIKE UPPER(?) OR UPPER(holets.reference) LIKE UPPER(?) OR UPPER(holets.created_at) LIKE UPPER(?) OR UPPER(holets.updated_at) LIKE UPPER(?);`,
                     [`%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`])
             res.send(results)
         }
@@ -49,8 +49,8 @@ app.get('/collaborators', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.collaborators;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.collaborators WHERE UPPER(collaborators.lastname) LIKE UPPER(?) OR UPPER(collaborators.firstname) LIKE UPPER(?) OR UPPER(collaborators.email) LIKE UPPER(?) OR UPPER(collaborators.phone) LIKE UPPER(?) OR UPPER(collaborators.function) LIKE UPPER(?) OR UPPER(collaborators.password) LIKE UPPER(?) OR UPPER(collaborators.created_at) LIKE UPPER(?) OR UPPER(collaborators.updated_at) LIKE UPPER(?);`,
+                [`%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
