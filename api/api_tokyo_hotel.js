@@ -2,7 +2,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import cors from 'cors'
-import {nom_hotel, city_hotel, adress_hotel, reference_hotel, ajout_bdd} from './assets/frontend.js';
+import {nom_hotel, city_hotel, adress_hotel, reference_hotel, ajout_bdd} from '../assets/frontend.js';
 
 // Connection to the database
 const connection = await mysql.createConnection({
