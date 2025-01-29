@@ -199,34 +199,6 @@ app.get('/rooms', async (req, res) => {
     }
 })
 
-
-
-//récupère les donnés de hotel ou recherche un hotel
-app.get('/tokyohotel', async (req, res) => {
-    if (req.query.search != null) {
-        //récupère 1 donné précise  
-        try {
-            const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.holets;`,
-                [req.query.search])
-            res.send(results)
-        }
-        catch (error) {
-            console.log('error')
-        }
-    }
-    else {
-        //récupère toutes les donners 
-        try {
-            const posts = await connection.query("SELECT * FROM tokyohotel.holets ;")
-            res.send(posts)
-        }
-        catch (error) {
-            console.log("error");
-        }
-    }
-})
-
 app.post('/tokyohotel', async (req, res) => {
     try {
         const [results, fields] = await connection.query('INSERT INTO tokyohotel.holets (code, city, adress, reference) VALUES (?, ?, ?, ?)',
