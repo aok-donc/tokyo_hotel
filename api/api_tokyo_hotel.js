@@ -209,6 +209,17 @@ app.post('/tokyohotel', async (req, res) => {
     }
 })
 
+app.post('/booking', async (req, res) => {
+    try {
+        const [results, fields] = await connection.query('INSERT INTO tokyohotel.booking (lastname, firstname, room_id, email, phone, start_at, end_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [req.body.lastname, req.body.firstname, req.body.room_id, req.body.email, req.body.phone, req.body.start_at, req.body.end_at])
+        res.send(results)
+    }
+    catch (error) {
+        console.log(error)
+    }
+})
+
 app.listen(3000, () => {
     console.log('API READY');
 })
