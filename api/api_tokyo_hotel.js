@@ -22,8 +22,8 @@ app.get('/hotel', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.holets;`,
-                [req.query.search])
+                await connection.query(`SELECT * FROM tokyohotel.holets WHERE holets.code LIKE ? OR holets.city LIKE ? OR holets.adress LIKE ? OR holets.reference LIKE ? OR holets.created_at LIKE ? OR holets.updated_at LIKE ?;`,
+                    [`%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`])
             res.send(results)
         }
         catch (error) {
