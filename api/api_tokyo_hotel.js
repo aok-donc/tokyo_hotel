@@ -2,7 +2,6 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import cors from 'cors'
-import {nom_hotel, city_hotel, adress_hotel, reference_hotel, ajout_bdd} from '../assets/frontend.js';
 
 // Connection to the database
 const connection = await mysql.createConnection({
@@ -23,7 +22,7 @@ app.get('/hotel', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.holets WHERE UPPER(holets.code) LIKE UPPER(?) OR UPPER(holets.city) LIKE UPPER(?) OR UPPER(holets.adress) LIKE UPPER(?) OR UPPER(holets.reference) LIKE UPPER(?) OR UPPER(holets.created_at) LIKE UPPER(?) OR UPPER(holets.updated_at) LIKE UPPER(?);`,
+                await connection.query(`SELECT * FROM tokyohotel.holets WHERE holets.code LIKE ? OR holets.city LIKE ? OR holets.adress LIKE ? OR holets.reference LIKE ? OR holets.created_at LIKE ? OR holets.updated_at LIKE ?;`,
                     [`%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`])
             res.send(results)
         }
@@ -49,8 +48,8 @@ app.get('/collaborators', async (req, res) => {
         //récupère 1 donné précise  
         try {
             const [results, fields] =
-                await connection.query(`SELECT * FROM tokyohotel.collaborators WHERE UPPER(collaborators.lastname) LIKE UPPER(?) OR UPPER(collaborators.firstname) LIKE UPPER(?) OR UPPER(collaborators.email) LIKE UPPER(?) OR UPPER(collaborators.phone) LIKE UPPER(?) OR UPPER(collaborators.function) LIKE UPPER(?) OR UPPER(collaborators.password) LIKE UPPER(?) OR UPPER(collaborators.created_at) LIKE UPPER(?) OR UPPER(collaborators.updated_at) LIKE UPPER(?);`,
-                [`%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`, `%${req.query.search}%`])
+                await connection.query(`SELECT * FROM tokyohotel.collaborators;`,
+                [req.query.search])
             res.send(results)
         }
         catch (error) {
@@ -202,7 +201,7 @@ app.get('/rooms', async (req, res) => {
 app.post('/tokyohotel', async (req, res) => {
     try {
         const [results, fields] = await connection.query('INSERT INTO tokyohotel.holets (code, city, adress, reference) VALUES (?, ?, ?, ?)',
-                [req.nom_hotel, req.city_hotel, req.adress_hotel, req.reference_hotel])
+                [req.body.nom_hotel, req.body.city_hotel, req.body.adress_hotel, req.body.reference_hotel])
         res.send(results)
     }
     catch (error) {
