@@ -1,15 +1,15 @@
 // frontend.js
-export const nom_hotel = document.querySelector('#input_nom_hotel');
-export const city_hotel = document.querySelector('#input_city_hotel');
-export const adress_hotel = document.querySelector('#input_adress_hotel');
-export const reference_hotel = document.querySelector('#input_reference_hotel');
-
-const ajout_bdd = document.querySelector('#button');
-
-ajout_bdd.addEventListener('click', () => {
-    // Utilisez les constantes exportées ici
-    console.log(nom_hotel.value);
-    console.log(city_hotel.value);
-    console.log(adress_hotel.value);
-    console.log(reference_hotel.value);
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("https://api.example.com/instances") // Remplace par l'URL de ton API
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("button-container");
+            data.forEach(instance => {
+                const button = document.createElement("button");
+                button.textContent = instance.name;
+                button.onclick = () => window.location.href = instance.link;
+                container.appendChild(button);
+            });
+        })
+        .catch(error => console.error("Erreur lors de la récupération des données:", error));
 });
