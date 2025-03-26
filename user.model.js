@@ -1,10 +1,11 @@
 const userModel = {
     getByEmail: async (email) => {
         const [results, fields] = await connection.query(
-            `SELECT * FROM tokyohotel.collaborators WHERE email = ?`, 
+            `SELECT * FROM tokyohotel.collaborators WHERE email = ?`,
             [email]
         )
-        return results;}
+        return results;
+    }
 }
 
 export default authController;

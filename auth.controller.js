@@ -11,20 +11,31 @@ const authController = {
             });
         }
 
-        if(!bcrypt.compareSync(req.body.password, user[0].password)) {
+        if (!bcrypt.compareSync(req.body.password, user[0].password)) {
             return res.json({
                 message: 'connection echoué'
             });
-        } 
+        }
 
-        const token =jwt.sign({userId: user[0].id}, 'azertyuiop');
+        const token = jwt.sign({ userId: user[0].id }, 'azertyuiop');
 
 
 
-        return res.json({ 
+        return res.json({
             token: token,
-            message: "ok" 
+            message: "ok"
         });
+    },
+    register: async (req, res) => {
+        const data = req.body;
+        const user = await userModel.getByEmail(data.email);
+        if (user.length > 0) {
+            return res.json({
+                message: 'email déjà utilisé'
+            });
+        }
+
+
     }
-} 
+}
 export default authController;
