@@ -35,6 +35,13 @@ const authController = {
             });
         }
 
+        data.passwordhash = bcrypt.hashSync(data.password, 10);
+
+        const result = await userModel.create(data)
+
+        return res.json({
+            message: "ok"
+        });
 
     }
 }

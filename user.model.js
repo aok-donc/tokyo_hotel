@@ -5,6 +5,13 @@ const userModel = {
             [email]
         )
         return results;
+    },
+    create: async (data) => {
+        const [results, fields] = await connection.query(
+            `INSERT INTO users (email, password) VALUES (?, ?)`,
+            [data.email, data.password]
+        )
+        return results;
     }
 }
 
